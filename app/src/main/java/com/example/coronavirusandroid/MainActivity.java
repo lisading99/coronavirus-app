@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -32,8 +34,8 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
     TextView deathsText;
     int numConfirmed;
     int numRecovered;
-    String CHANNEL_ID;
-    String MY_PREFS_NAME = "prefName";
+    public static String CHANNEL_ID = "displayResultsNotif";
+    public static String MY_PREFS_NAME = "prefName";
     NotificationCompat.Builder builder;
 
     @Override
@@ -77,19 +79,19 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
     @Override
     protected void onPause() {
         super.onPause();
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-// notificationId is a unique int for each notification that you must define
-        int notificationId = 1;
-        notificationManager.notify(notificationId, builder.build());
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//// notificationId is a unique int for each notification that you must define
+//        int notificationId = 1;
+//        notificationManager.notify(notificationId, builder.build());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-// notificationId is a unique int for each notification that you must define
-        int notificationId = 1;
-        notificationManager.notify(notificationId, builder.build());
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//// notificationId is a unique int for each notification that you must define
+//        int notificationId = 1;
+//        notificationManager.notify(notificationId, builder.build());
     }
 
     @Override
@@ -131,20 +133,31 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
         String country = prefs.getString("country", "No country defined");//"No name defined" is the default value.
         String province = prefs.getString("province", "No province defined");
 
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 23);
-        today.set(Calendar.MINUTE, 28);
-        today.set(Calendar.SECOND, 0);
+//        Calendar calendar = Calendar.getInstance();
+//        today.set(Calendar.HOUR_OF_DAY, 1);
+//        today.set(Calendar.MINUTE, 12);
+//        today.set(Calendar.SECOND, 0);
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 1); // For 1 PM or 2 PM
+        calendar.set(Calendar.MINUTE, 52);
+        calendar.set(Calendar.SECOND, 0);
+        PendingIntent pi = PendingIntent.getBroadcast(this, 0,
+                new Intent(this, NotificationBroadcast.class),PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pi);
 
 // every night at 2am you run your task
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                coronavirusApiController.start(country, province);
-            }
-        };
-        timer.schedule(timerTask, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)); // period: 1 day
+//        Timer timer = new Timer();
+//        TimerTask timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                coronavirusApiController.start(country, province);
+//            }
+//        };
+//        timer.schedule(timerTask, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)); // period: 1 day
     }
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

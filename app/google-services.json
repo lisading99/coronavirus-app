@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "520072253478",
+    "firebase_url": "https://coronavirustracker-48c66.firebaseio.com",
+    "project_id": "coronavirustracker-48c66",
+    "storage_bucket": "coronavirustracker-48c66.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520072253478:android:9160aa5b2be4ea711216e7",
+        "android_client_info": {
+          "package_name": "com.example.coronavirusandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "520072253478-2pgbql6ctpre0u0iejpdfcr365t0b2g0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYEKanjEaB2BmQrupS4lyzxmB8y7rxT2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "520072253478-2pgbql6ctpre0u0iejpdfcr365t0b2g0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
