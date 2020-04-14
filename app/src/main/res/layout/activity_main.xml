@@ -32,14 +32,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/provinceOrState" />
-
+    <Button
+        android:id="@+id/getNotifs"
+        android:text="Get notifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coronavirusResults" />
     <TextView
         android:id="@+id/confirmed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coronavirusResults" />
+        app:layout_constraintTop_toBottomOf="@+id/getNotifs" />
 
     <TextView
         android:id="@+id/recovered"

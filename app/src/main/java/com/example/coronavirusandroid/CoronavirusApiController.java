@@ -22,6 +22,7 @@ public class CoronavirusApiController {
         void updateConfirmed(int confirmed);
         void updateRecovered(int recovered);
         void updateDeaths(int deaths);
+        void updateNotifs(int confirmed, int recovered, int deaths);
     }
     static final String BASE_URL = "https://coronavirus-tracker-api.herokuapp.com";
 
@@ -49,6 +50,7 @@ public class CoronavirusApiController {
                 coronavirusApiControllerToUI.updateConfirmed(confirmed);
                 coronavirusApiControllerToUI.updateRecovered(recovered);
                 coronavirusApiControllerToUI.updateDeaths(deaths);
+                coronavirusApiControllerToUI.updateNotifs(confirmed, recovered, deaths);
             }
 
             @Override
