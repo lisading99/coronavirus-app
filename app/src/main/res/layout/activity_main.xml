@@ -6,40 +6,102 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/country"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/countryLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:hintTextAppearance="@style/MyHintStyle"
+        app:boxStrokeColor="@color/colorPrimary"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/provinceOrState"
-        />
-    <EditText
-        android:id="@+id/provinceOrState"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:hint="@string/country_label"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:boxStrokeColor="@color/colorPrimary"
+        app:hintTextAppearance="@style/MyHintStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/country"
-        app:layout_constraintBottom_toTopOf="@+id/coronavirusResults"
-        />
-    <Button
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:hint="@string/country_label"
+        android:id="@+id/provinceOrStateLayout"
+        app:layout_constraintTop_toBottomOf="@+id/countryLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+           android:id="@+id/provinceOrState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    <EditText-->
+<!--        android:id="@+id/country"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/provinceOrState"-->
+<!--        />-->
+<!--    <EditText-->
+<!--        android:id="@+id/provinceOrState"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/country"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/coronavirusResults"-->
+<!--        />-->
+<!--    <Button-->
+<!--        android:id="@+id/coronavirusResults"-->
+<!--        android:text="Get coronavirus results"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        -->
+<!--        style = "@style/btn"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/provinceOrStateLayout"-->
+<!--        />-->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/coronavirusResults"
-        android:text="Get coronavirus results"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/provinceOrState" />
+        app:layout_constraintTop_toBottomOf="@+id/provinceOrStateLayout"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    app:cornerRadius="5dp"
+        android:text="Get coronavirus results"
+    app:strokeColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimary"/>
     <Button
         android:id="@+id/getNotifs"
         android:text="Get notifications"
+        android:fontFamily="@font/robotoregular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coronavirusResults" />
+    <Button
+        android:id="@+id/displayPieChart"
+        android:text="Display pie chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getNotifs" />
     <TextView
         android:id="@+id/confirmed"
         android:layout_width="wrap_content"
@@ -63,6 +125,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recovered" />
+
 
 
 

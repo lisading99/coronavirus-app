@@ -23,10 +23,11 @@ public class CoronavirusApiController {
         void updateRecovered(int recovered);
         void updateDeaths(int deaths);
         void updateNotifs(int confirmed, int recovered, int deaths);
+        void displayChart(int confirmed, int recovered, int deaths);
     }
     static final String BASE_URL = "https://coronavirus-tracker-api.herokuapp.com";
 
-    public void start(String country, String provinceOrState) {
+    public void start(String country, String provinceOrState, String description) {
 
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -47,10 +48,15 @@ public class CoronavirusApiController {
                 int confirmed = response.body().getLatest().getConfirmed();
                 int recovered = response.body().getLatest().getRecovered();
                 int deaths = response.body().getLatest().getDeaths();
-                coronavirusApiControllerToUI.updateConfirmed(confirmed);
-                coronavirusApiControllerToUI.updateRecovered(recovered);
-                coronavirusApiControllerToUI.updateDeaths(deaths);
-                coronavirusApiControllerToUI.updateNotifs(confirmed, recovered, deaths);
+                if (description.contentEquals(MainActivity.DISPLAY_NUMBERS)) {
+                    coronavirusApiControllerToUI.updateConfirmed(confirmed);
+                    coronavirusApiControllerToUI.updateRecovered(recovered);
+                    coronavirusApiControllerToUI.updateDeaths(deaths);
+                } else if (description.contentEquals(MainActivity.GET_NOTIFICATIONS)) {
+                    coronavirusApiControllerToUI.updateNotifs(confirmed, recovered, deaths);
+                } else if (description.contentEquals(MainActivity.pieChart)) {
+                    coronavirusApiControllerToUI.displayChart(confirmed, recovered, deaths);
+                }
             }
 
             @Override

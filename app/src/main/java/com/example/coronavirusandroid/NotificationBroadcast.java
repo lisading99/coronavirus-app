@@ -24,7 +24,7 @@ public class NotificationBroadcast extends BroadcastReceiver implements Coronavi
         String country = prefs.getString("country", "No country defined");//"No name defined" is the default value.
         String province = prefs.getString("province", "No province defined");
         CoronavirusApiController coronavirusApiController = new CoronavirusApiController(this);
-        coronavirusApiController.start(country, province);
+        coronavirusApiController.start(country, province, MainActivity.GET_NOTIFICATIONS);
     }
 
     @Override
@@ -69,5 +69,10 @@ public class NotificationBroadcast extends BroadcastReceiver implements Coronavi
 // notificationId is a unique int for each notification that you must define
         int notificationId = 1;
         notificationManager.notify(notificationId, builder.build());
+    }
+
+    @Override
+    public void displayChart(int confirmed, int recovered, int deaths) {
+
     }
 }

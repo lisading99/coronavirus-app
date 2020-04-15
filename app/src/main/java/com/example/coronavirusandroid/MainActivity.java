@@ -18,24 +18,45 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.anychart.anychart.AnyChart;
+import com.anychart.anychart.AnyChartView;
+import com.anychart.anychart.DataEntry;
+import com.anychart.anychart.Pie;
+import com.anychart.anychart.ValueDataEntry;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements CoronavirusApiController.CoronavirusApiControllerToUI {
-    EditText country;
-    EditText provinceOrState;
-    Button getCoronavirusResults;
+//    EditText country;
+//    EditText provinceOrState;
+//    Button getCoronavirusResults;
     Button getNotifs;
+    Button displayPieChart;
     CoronavirusApiController coronavirusApiController;
     TextView confirmedText;
     TextView recoverdText;
     TextView deathsText;
+    TextInputLayout textInputLayout;
+    TextInputEditText country, provinceOrState;
+    MaterialButton getCoronavirusResults;
     int numConfirmed;
     int numRecovered;
     public static String CHANNEL_ID = "displayResultsNotif";
     public static String MY_PREFS_NAME = "prefName";
+    public static String EXTRA_MESSAGE = "com.example.coronavirusandroid.MESSAGE";
+    public static String RECOVERED = "com.example.coronavirusandroid.RECOVERED";
+    public static String DEATHS = "com.example.coronavirusandroid.DEATHS";
+    public static String pieChart = "pie_chart";
+    public static String DISPLAY_NUMBERS = "DISPLAY_NUMBERS";
+    public static String GET_NOTIFICATIONS = "GET_NOTIFICATIONS";
     NotificationCompat.Builder builder;
 
     @Override
@@ -44,18 +65,21 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
         setContentView(R.layout.activity_main);
         country = findViewById(R.id.country);
         provinceOrState = findViewById(R.id.provinceOrState);
+//        country = findViewById(R.id.country);
+//        provinceOrState = findViewById(R.id.provinceOrState);
         getCoronavirusResults = findViewById(R.id.coronavirusResults);
         confirmedText = findViewById(R.id.confirmed);
         recoverdText = findViewById(R.id.recovered);
         deathsText = findViewById(R.id.deaths);
         getNotifs = findViewById(R.id.getNotifs);
+        displayPieChart = findViewById(R.id.displayPieChart);
         coronavirusApiController = new CoronavirusApiController(this);
 
 
         getCoronavirusResults.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                coronavirusApiController.start(country.getText().toString(), provinceOrState.getText().toString());
+                coronavirusApiController.start(country.getText().toString(), provinceOrState.getText().toString(), DISPLAY_NUMBERS);
             }
         });
 
@@ -72,6 +96,18 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
             }
         });
 
+        displayPieChart.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+//                SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+//                String country = prefs.getString("country", "No country defined");//"No name defined" is the default value.
+//                String province = prefs.getString("province", "No province defined");
+//                coronavirusApiController.start(country.getText().toString(), provinceOrState.getText().toString(), pieChart);
+                Intent intent = new Intent(getApplicationContext(), DisplayResultsActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -127,6 +163,24 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
         notificationManager.notify(notificationId, builder.build());
     }
 
+    @Override
+    public void displayChart(int confirmed, int recovered, int deaths) {
+//        Intent intent = new Intent(getApplicationContext(), PieChartActivity.class);
+//        intent.putExtra(EXTRA_MESSAGE, confirmed);
+//        intent.putExtra(RECOVERED, recovered);
+//        intent.putExtra(DEATHS, deaths);
+//        startActivity(intent);
+//        Pie pie = AnyChart.pie();
+//
+//        List<DataEntry> data = new ArrayList<>();
+//        data.add(new ValueDataEntry("Confirmed", confirmed));
+//        data.add(new ValueDataEntry("Recovered", recovered));
+//        data.add(new ValueDataEntry("Deaths", deaths));
+//
+//        AnyChartView anyChartView = (AnyChartView) findViewById(R.id.any_chart_view);
+//        anyChartView.setChart(pie);
+    }
+
     private void displayNotifsBySpecifiedTime() {
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
@@ -140,8 +194,8 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
 
         Calendar calendar = Calendar.getInstance();
 
-        calendar.set(Calendar.HOUR_OF_DAY, 1); // For 1 PM or 2 PM
-        calendar.set(Calendar.MINUTE, 52);
+        calendar.set(Calendar.HOUR_OF_DAY, 17); // For 1 PM or 2 PM
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0,
                 new Intent(this, NotificationBroadcast.class),PendingIntent.FLAG_UPDATE_CURRENT);
