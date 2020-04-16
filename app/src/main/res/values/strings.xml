@@ -2,4 +2,7 @@
     <string name="app_name">CoronavirusAndroid</string>
     <string name="country_label"> Country </string>
     <string name="province_label"> Province (optional) </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

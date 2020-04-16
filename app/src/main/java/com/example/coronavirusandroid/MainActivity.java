@@ -104,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
 //                String country = prefs.getString("country", "No country defined");//"No name defined" is the default value.
 //                String province = prefs.getString("province", "No province defined");
 //                coronavirusApiController.start(country.getText().toString(), provinceOrState.getText().toString(), pieChart);
-                Intent intent = new Intent(getApplicationContext(), DisplayResultsActivity.class);
-                startActivity(intent);
+                coronavirusApiController.start(country.getText().toString(), provinceOrState.getText().toString(), pieChart);
+
             }
         });
 
@@ -165,6 +165,11 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
 
     @Override
     public void displayChart(int confirmed, int recovered, int deaths) {
+        Intent intent = new Intent(getApplicationContext(), DisplayResultsActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, confirmed);
+        intent.putExtra(RECOVERED, recovered);
+        intent.putExtra(DEATHS, deaths);
+        startActivity(intent);
 //        Intent intent = new Intent(getApplicationContext(), PieChartActivity.class);
 //        intent.putExtra(EXTRA_MESSAGE, confirmed);
 //        intent.putExtra(RECOVERED, recovered);

@@ -28,7 +28,7 @@ public class CoronavirusApiController {
     static final String BASE_URL = "https://coronavirus-tracker-api.herokuapp.com";
 
     public void start(String country, String provinceOrState, String description) {
-
+        Call<Countries> call;
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -40,8 +40,15 @@ public class CoronavirusApiController {
 
         CoronavirusApi coronavirusApi = retrofit.create(CoronavirusApi.class);
 
-        Call<Countries> call = coronavirusApi.getCountries(country, provinceOrState
-                );
+        // check if province and country are valid; check if province is empty
+        if (provinceOrState.contentEquals("")) {
+            call = coronavirusApi.getCountries(country);
+        } else {
+            call = coronavirusApi.getCountriesWithProvince(country, provinceOrState
+            );
+        }
+        // enqueue the countries api to check if the country input is valid
+
         call.enqueue(new Callback<Countries>() {
             @Override
             public void onResponse(Call<Countries> call, Response<Countries> response) {
