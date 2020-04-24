@@ -5,11 +5,12 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.anychart.anychart.AnyChart;
-import com.anychart.anychart.AnyChartView;
-import com.anychart.anychart.DataEntry;
-import com.anychart.anychart.Pie;
-import com.anychart.anychart.ValueDataEntry;
+
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Pie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class PieChartActivity extends AppCompatActivity implements CoronavirusAp
     }
 
     @Override
-    public void displayChart(int confirmed, int recovered, int deaths) {
+    public void displayChart(int confirmed, int recovered, int deaths, String province, String country) {
 
     }
 }

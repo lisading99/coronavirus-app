@@ -26,7 +26,9 @@ public class DisplayResultsActivity extends AppCompatActivity {
 
     int confirmed;
     int recovered;
-
+    int deaths;
+    String country;
+    String province;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,9 @@ public class DisplayResultsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         confirmed = intent.getIntExtra(MainActivity.EXTRA_MESSAGE, 0);
         recovered = intent.getIntExtra(MainActivity.RECOVERED, 0);
+        deaths = intent.getIntExtra(MainActivity.DEATHS, 0);
+        country = intent.getStringExtra(MainActivity.COUNTRY);
+        province = intent.getStringExtra(MainActivity.PROVINCE);
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -65,11 +70,11 @@ public class DisplayResultsActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
-                    return TabFragment.newInstance(confirmed, recovered);
+                    return TabFragment.newInstance(confirmed, recovered, deaths);
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return TabFragment.newInstance(1, recovered);
+                    return PieChartFragment.newInstance(confirmed, recovered, deaths);
                 case 2: // Fragment # 1 - This will show SecondFragment
-                    return TabFragment.newInstance(2, 3);
+                    return BarGraphFragment.newInstance(country, province);
                 default:
                     return null;
             }

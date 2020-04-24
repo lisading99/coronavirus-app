@@ -1,8 +1,13 @@
 package com.example.coronavirusandroid;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -13,17 +18,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.anychart.anychart.AnyChart;
-import com.anychart.anychart.AnyChartView;
-import com.anychart.anychart.DataEntry;
-import com.anychart.anychart.Pie;
-import com.anychart.anychart.ValueDataEntry;
+
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -34,7 +39,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements CoronavirusApiController.CoronavirusApiControllerToUI {
+public class MainActivity extends AppCompatActivity implements CoronavirusApiController.CoronavirusApiControllerToUI, NavigationView.OnNavigationItemSelectedListener
+{
 //    EditText country;
 //    EditText provinceOrState;
 //    Button getCoronavirusResults;
@@ -44,9 +50,13 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
     TextView confirmedText;
     TextView recoverdText;
     TextView deathsText;
+    Menu menu;
     TextInputLayout textInputLayout;
     TextInputEditText country, provinceOrState;
     MaterialButton getCoronavirusResults;
+    Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     int numConfirmed;
     int numRecovered;
     public static String CHANNEL_ID = "displayResultsNotif";
@@ -54,10 +64,14 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
     public static String EXTRA_MESSAGE = "com.example.coronavirusandroid.MESSAGE";
     public static String RECOVERED = "com.example.coronavirusandroid.RECOVERED";
     public static String DEATHS = "com.example.coronavirusandroid.DEATHS";
+    public static String COUNTRY = "com.example.coronavirusandroid.COUNTRY";
+    public static String PROVINCE = "com.example.coronavirusandroid.PROVINCE";
     public static String pieChart = "pie_chart";
     public static String DISPLAY_NUMBERS = "DISPLAY_NUMBERS";
     public static String GET_NOTIFICATIONS = "GET_NOTIFICATIONS";
     NotificationCompat.Builder builder;
+    String countryInput;
+    String provinceInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +87,41 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
         deathsText = findViewById(R.id.deaths);
         getNotifs = findViewById(R.id.getNotifs);
         displayPieChart = findViewById(R.id.displayPieChart);
+        navigationView = findViewById(R.id.nav_view);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
         coronavirusApiController = new CoronavirusApiController(this);
+
+        countryInput = country.getText().toString();
+        provinceInput = provinceOrState.getText().toString();
+
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Intent intent;
+                switch(menuItem.getItemId()) {
+                    case R.id.nav_coronavirus_results:
+                        intent = new Intent(MainActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.nav_notifications:
+                        // another startActivity, this is for item with id "menu_item2"
+                        intent = new Intent(MainActivity.this, NotificationActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.nav_latest_news:
+                        break;
+                    default:
+                        return true;
+            }
+            return true;
+        }});
 
 
         getCoronavirusResults.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +178,34 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
 //        notificationManager.notify(notificationId, builder.build());
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch(item.getItemId()) {
+            case R.id.nav_coronavirus_results:
+                intent = new Intent(this, MainActivity.class);
+                this.startActivity(intent);
+                break;
+            case R.id.nav_notifications:
+                // another startActivity, this is for item with id "menu_item2"
+                intent = new Intent(this, NotificationActivity.class);
+                this.startActivity(intent);
+                break;
+            case R.id.nav_latest_news:
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
     @Override
     public void updateConfirmed(int confirmed) {
         confirmedText.setText(Integer.toString(confirmed));
@@ -164,11 +240,14 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
     }
 
     @Override
-    public void displayChart(int confirmed, int recovered, int deaths) {
+    public void displayChart(int confirmed, int recovered, int deaths, String provinceInput, String countryInput) {
         Intent intent = new Intent(getApplicationContext(), DisplayResultsActivity.class);
         intent.putExtra(EXTRA_MESSAGE, confirmed);
         intent.putExtra(RECOVERED, recovered);
         intent.putExtra(DEATHS, deaths);
+        intent.putExtra(COUNTRY, countryInput);
+        intent.putExtra(PROVINCE, provinceInput);
+        System.out.println(provinceInput + "========");
         startActivity(intent);
 //        Intent intent = new Intent(getApplicationContext(), PieChartActivity.class);
 //        intent.putExtra(EXTRA_MESSAGE, confirmed);
@@ -232,5 +311,10 @@ public class MainActivity extends AppCompatActivity implements CoronavirusApiCon
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
     }
 }

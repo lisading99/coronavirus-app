@@ -23,7 +23,7 @@ public class CoronavirusApiController {
         void updateRecovered(int recovered);
         void updateDeaths(int deaths);
         void updateNotifs(int confirmed, int recovered, int deaths);
-        void displayChart(int confirmed, int recovered, int deaths);
+        void displayChart(int confirmed, int recovered, int deaths, String province, String country);
     }
     static final String BASE_URL = "https://coronavirus-tracker-api.herokuapp.com";
 
@@ -44,7 +44,7 @@ public class CoronavirusApiController {
         if (provinceOrState.contentEquals("")) {
             call = coronavirusApi.getCountries(country);
         } else {
-            call = coronavirusApi.getCountriesWithProvince(country, provinceOrState
+            call = coronavirusApi.getCountriesWithProvince(provinceOrState
             );
         }
         // enqueue the countries api to check if the country input is valid
@@ -53,6 +53,7 @@ public class CoronavirusApiController {
             @Override
             public void onResponse(Call<Countries> call, Response<Countries> response) {
                 int confirmed = response.body().getLatest().getConfirmed();
+
                 int recovered = response.body().getLatest().getRecovered();
                 int deaths = response.body().getLatest().getDeaths();
                 if (description.contentEquals(MainActivity.DISPLAY_NUMBERS)) {
@@ -62,7 +63,7 @@ public class CoronavirusApiController {
                 } else if (description.contentEquals(MainActivity.GET_NOTIFICATIONS)) {
                     coronavirusApiControllerToUI.updateNotifs(confirmed, recovered, deaths);
                 } else if (description.contentEquals(MainActivity.pieChart)) {
-                    coronavirusApiControllerToUI.displayChart(confirmed, recovered, deaths);
+                    coronavirusApiControllerToUI.displayChart(confirmed, recovered, deaths, provinceOrState, country);
                 }
             }
 

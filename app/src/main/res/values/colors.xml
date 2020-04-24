@@ -3,4 +3,6 @@
     <color name="colorPrimary">#03A9F4</color>
     <color name="colorPrimaryDark">#01579B</color>
     <color name="colorAccent">#FF9800</color>
+    <color name="deaths">#F44336</color>
+    <color name="recovered">#8BC34A</color>
 </resources>

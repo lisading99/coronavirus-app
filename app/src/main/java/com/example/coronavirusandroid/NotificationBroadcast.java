@@ -72,7 +72,7 @@ public class NotificationBroadcast extends BroadcastReceiver implements Coronavi
     }
 
     @Override
-    public void displayChart(int confirmed, int recovered, int deaths) {
+    public void displayChart(int confirmed, int recovered, int deaths, String province, String country) {
 
     }
 }
