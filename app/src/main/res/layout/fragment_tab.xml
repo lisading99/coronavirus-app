@@ -3,39 +3,135 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".TabFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/confirmedNumber"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:textColor="@color/colorPrimary"
-        android:fontFamily="@font/robotoregular"
-        android:textSize="25dp"
-        />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="50dp"
+        >
+        <TextView
+            android:id="@+id/cumulativeTitle"
+            android:text="Cumulative cases"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="30dp"
+            android:fontFamily="@font/ralewaysemibold"
+            android:textColor="@color/colorPrimary"
+            />
+        <TextView
+            android:id="@+id/confirmedNumberLabel"
+            android:text="Confirmed:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/cumulativeTitle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="20dp"
+            android:fontFamily="@font/ralewaysemibold"
+            android:textColor="@color/secondaryColor"/>
+        <TextView
+            android:id="@+id/confirmedNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/ralewayregular"
+            android:textSize="20dp"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/cumulativeTitle"
+            app:layout_constraintLeft_toRightOf="@+id/confirmedNumberLabel"
+            />
 
-    <TextView
-        android:id="@+id/recoveredNumber"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="20dp"
-        android:textColor="@color/colorPrimary"
-        android:fontFamily="@font/robotoregular"
-        android:textSize="25dp"
-        />
-    <TextView
-        android:id="@+id/deathsNumber"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
+        <TextView
+            android:id="@+id/recoveredNumberLabel"
+            android:text="Recovered:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/confirmedNumberLabel"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="20dp"
+            android:fontFamily="@font/ralewaysemibold"
+            android:textColor="@color/secondaryColor"/>
+        <TextView
+            android:id="@+id/recoveredNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/confirmedNumber"
+            app:layout_constraintLeft_toRightOf="@id/recoveredNumberLabel"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/ralewayregular"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:id="@+id/deathsNumberLabel"
+            android:text="Deaths:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/recoveredNumberLabel"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="20dp"
+            android:fontFamily="@font/ralewaysemibold"
+            android:textColor="@color/secondaryColor"/>
+        <TextView
+            android:id="@+id/deathsNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/recoveredNumber"
+            app:layout_constraintLeft_toRightOf="@+id/deathsNumberLabel"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/ralewayregular"
+            android:textSize="20dp"
+            />
 
-        android:layout_marginLeft="20dp"
-        android:textColor="@color/colorPrimary"
-        android:fontFamily="@font/robotoregular"
-        android:textSize="25dp"
-        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_marginLeft="50dp"-->
+<!--        >-->
+<!--        <TextView-->
+<!--            android:id="@+id/cumulativeTitle"-->
+<!--            android:text="Cumulative cases"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            android:textSize="30dp"-->
+<!--            android:fontFamily="@font/ralewaysemibold"-->
+<!--            android:textColor="@color/colorPrimary"-->
+<!--            />-->
+<!--        <TextView-->
+<!--            android:id="@+id/confirmedNumberLabel"-->
+<!--            android:text="Confirmed:"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/cumulativeTitle"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            android:textSize="20dp"-->
+<!--            android:fontFamily="@font/ralewaysemibold"-->
+<!--            android:textColor="@color/secondaryColor"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/confirmedNumber"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/secondaryColor"-->
+<!--            android:fontFamily="@font/ralewayregular"-->
+<!--            android:textSize="20dp"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/cumulativeTitle"-->
+<!--            app:layout_constraintLeft_toRightOf="@+id/confirmedNumberLabel"-->
+<!--            />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
 </FrameLayout>

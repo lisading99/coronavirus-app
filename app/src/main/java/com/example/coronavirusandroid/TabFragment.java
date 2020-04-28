@@ -60,9 +60,9 @@ public class TabFragment extends Fragment {
         TextView confirmedNumber = view.findViewById(R.id.confirmedNumber);
         TextView recoveredNumber = view.findViewById(R.id.recoveredNumber);
         TextView deathNumber = view.findViewById(R.id.deathsNumber);
-        confirmedNumber.setText("Confirmed cases: " + Integer.toString(confirmed));
-        recoveredNumber.setText("Recovered cases: " + Integer.toString(recovered));
-        deathNumber.setText("Deaths: " + Integer.toString(deaths));
+        confirmedNumber.setText(Integer.toString(confirmed));
+        recoveredNumber.setText(Integer.toString(recovered));
+        deathNumber.setText(Integer.toString(deaths));
         return view;
     }
 }

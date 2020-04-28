@@ -21,6 +21,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -32,47 +33,98 @@
         </com.google.android.material.appbar.AppBarLayout>
 
 
-
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="140dp"
+            android:orientation="horizontal"
+            android:checkedButton="@id/countryButton"
+            >
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/countryButton"
+                android:text="Country"
+                android:textSize="20dp"
+                android:textColor="@color/secondaryColor"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/provinceOrStateButton"
+                android:text="Province"
+                android:textSize="20dp"
+                android:textColor="@color/secondaryColor"
+                android:buttonTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                />
+        </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/countryLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:hintTextAppearance="@style/MyHintStyle"
-            app:boxStrokeColor="@color/colorPrimary"
+            android:id="@+id/countryOrProvinceLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:theme="@style/textAppearanceNotification"
+            app:boxBackgroundColor="#FFFFFF"
+            android:hint="Country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="70dp"
             android:layout_marginRight="70dp"
-            android:hint="@string/country_label"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/country"
+                android:id="@+id/countryOrProvinceInput"
+                android:textColor="@color/secondaryColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            app:boxStrokeColor="@color/colorPrimary"
-            app:hintTextAppearance="@style/MyHintStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"
-            android:hint="@string/province_label"
-            android:id="@+id/provinceOrStateLayout"
-            app:layout_constraintTop_toBottomOf="@+id/countryLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/countryLayout"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
+<!--            app:theme="@style/textLayoutAppearanceForNav"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="150dp"-->
+<!--            android:layout_marginLeft="70dp"-->
+<!--            android:layout_marginRight="70dp"-->
+<!--            android:hint="@string/country_label"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/provinceOrState"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/country"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="#B0000000"/>-->
 
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            app:theme="@style/textLayoutAppearanceForNav"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="70dp"-->
+<!--            android:layout_marginRight="70dp"-->
+<!--            android:hint="@string/province_label"-->
+<!--            android:id="@+id/provinceOrStateLayout"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/countryLayout"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/provinceOrState"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="#B0000000"-->
+<!--                />-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
         <!--    <EditText-->
         <!--        android:id="@+id/country"-->
         <!--        android:layout_width="wrap_content"-->
@@ -101,16 +153,72 @@
         <!--        style = "@style/btn"-->
         <!--        app:layout_constraintTop_toBottomOf="@+id/provinceOrStateLayout"-->
         <!--        />-->
-        <Button
-            android:id="@+id/getNotifs"
-            android:text="Get notifications"
-            android:fontFamily="@font/robotoregular"
+        <com.google.android.material.button.MaterialButton
+        android:id="@+id/getNotifs"
+        android:text="Get notifications"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setTimeLayout"
+        style="@style/Widget.MaterialComponents.Button"
+        app:cornerRadius="40dp"
+        app:strokeColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimary"
+            android:backgroundTint="#FFFFFF"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/setTimeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/countryOrProvinceLayout"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provinceOrStateLayout" />
+            app:layout_constraintRight_toRightOf="parent">
+        <TextView
+            android:id="@+id/setTimeLabel"
+            android:text="Set time (daily): "
+            android:textColor="#B0000000"
+            android:textSize="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/setTime"
+            android:backgroundTint="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/setTimeLabel"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/Widget.MaterialComponents.Button"
+            app:cornerRadius="40dp"
+            android:textColor="@color/colorPrimary" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            app:boxStrokeColor="@color/colorPrimary"-->
+<!--            app:hintTextAppearance="@style/MyHintStyle"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="70dp"-->
+<!--            android:layout_marginRight="70dp"-->
+<!--            android:hint="Set time"-->
+<!--            -->
+<!--            android:id="@+id/setTimeLayout"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/provinceOrStateLayout"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">-->
 
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/setTime"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,8 +1,6 @@
 package com.example.coronavirusandroid;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 
 import androidx.core.util.Pair;
 
@@ -12,13 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -26,38 +22,91 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okio.Buffer;
-import okio.BufferedSource;
 
 public class CasesByDateApiController {
-    SendCasesToFragment sendCasesToFragment;
+    SendCasesToBarGraphFragment sendCasesToBarGraphFragment;
+    SendCasesToMainActivity sendCasesToMainActivity;
+    SendCasesToNotificationActivity sendCasesToNotificationActivity;
+    SendCasesToNotificationBroadcast sendCasesToNotificationBroadcast;
     List<Pair<String, Integer>> casesPerDayList = new ArrayList<>();
     List<Pair<String, Integer>> recoveredPerDayList = new ArrayList<>();
     List<Pair<String, Integer>> deathsPerDayList = new ArrayList<>();
+    String callerClass = "";
+    String BARGRAPHFRAGMENT = "BARGRAPHFRAGMENT";
+    String MAINACTIVITY = "MAINACTIVITY";
+    String NOTIFICATIONACTIVITY = "NOTIIFICATIONACTIVITY";
+    String NOTIFICATIONBROADCAST = "NOTIFICATIONBROADCAST";
     CountDownLatch countDownLatch = new CountDownLatch(1);
     String province = "";
     String country = "";
     Context context;
+    int confirmed;
+    int recovered;
+    int deaths;
+    boolean isResponseSuccessful = true;
 
 
-
-    public interface SendCasesToFragment {
-        void sendCasesPerDayToFragment(List<Pair<String, Integer>> casesPerDayList, List<Pair<String, Integer>> deathsPerDayList, List<Pair<String, Integer>> recoveredPerDayList, String provinceOrCountry);
+    public interface SendCasesToMainActivity {
+        void sendCasesPerDay(List<Pair<String, Integer>> casesPerDayList,
+                             List<Pair<String, Integer>> deathsPerDayList,
+                             List<Pair<String, Integer>> recoveredPerDayList);
+        void sendCumulativeCases(int confirmed, int deaths, int recovered);
+        void displayUnavailableData();
     }
 
-    public CasesByDateApiController(SendCasesToFragment sendCasesToFragment, Context context) {
-        this.sendCasesToFragment = sendCasesToFragment;
-        this.context = context;
+    public interface SendCasesToNotificationActivity {
+        void sendCasesPerDay(List<Pair<String, Integer>> casesPerDayList,
+                             List<Pair<String, Integer>> deathsPerDayList,
+                             List<Pair<String, Integer>> recoveredPerDayList);
+        void sendCumulativeCases(int confirmed, int deaths, int recovered);
+        void displayUnavailableData();
     }
-    public void run(String url, String province, String country) throws IOException, InterruptedException {
+
+    public interface SendCasesToNotificationBroadcast {
+        void sendCasesPerDay(List<Pair<String, Integer>> casesPerDayList,
+                                       List<Pair<String, Integer>> deathsPerDayList,
+                                       List<Pair<String, Integer>> recoveredPerDayList);
+        void sendCumulativeCases(int confirmed, int deaths, int recovered);
+        void updateNotifs(int confirmed, int recovered, int deaths);
+    }
+
+
+    public interface SendCasesToBarGraphFragment {
+        void sendCasesPerDay(List<Pair<String, Integer>> casesPerDayList,
+                                       List<Pair<String, Integer>> deathsPerDayList,
+                                       List<Pair<String, Integer>> recoveredPerDayList);
+    }
+
+    public CasesByDateApiController(SendCasesToBarGraphFragment sendCasesToBarGraphFragment) {
+        this.sendCasesToBarGraphFragment = sendCasesToBarGraphFragment;
+        this.callerClass = BARGRAPHFRAGMENT;
+    }
+    public CasesByDateApiController(SendCasesToNotificationBroadcast sendCasesToNotificationBroadcast) {
+        this.sendCasesToNotificationBroadcast = sendCasesToNotificationBroadcast;
+        this.callerClass = NOTIFICATIONBROADCAST;
+    }
+    public CasesByDateApiController(SendCasesToNotificationActivity sendCasesToNotificationActivity) {
+        this.sendCasesToNotificationActivity = sendCasesToNotificationActivity;
+        this.callerClass = NOTIFICATIONACTIVITY;
+    }
+    public CasesByDateApiController(SendCasesToMainActivity sendCasesToMainActivity) {
+        this.sendCasesToMainActivity = sendCasesToMainActivity;
+        this.callerClass = MAINACTIVITY;
+    }
+    public void getProvinceData(String province, boolean isCumulative) throws IOException, InterruptedException {
+        countDownLatch = new CountDownLatch(1);
+        String urlNotCumulative = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=1&province=";
+        String urlCumulative = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?province=";
+        String url = "";
         OkHttpClient client = new OkHttpClient();
+
 //        List<Pair<String, Integer>> casesPerDayList = new ArrayList<>();
         HashMap<String, Integer> casesPerMonth = new HashMap<>();
         this.province = province;
-        this.country = country;
-        if (!province.contentEquals("")) {
-            url = url + province;
-
+        if (isCumulative) {
+            url = urlCumulative + province;
+        } else {
+            url = urlNotCumulative + province;
         }
 
         Request request = new Request.Builder()
@@ -75,8 +124,11 @@ public class CasesByDateApiController {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
-                    if (!response.isSuccessful())
-                        throw new IOException("Unexpected code " + response);
+                    if (!response.isSuccessful()) {
+                        isResponseSuccessful = false;
+                        countDownLatch.countDown();
+                    } else {
+
 ////
 ////                    int cases;
 ////                    // go through response body and parse for timelines and get cases for each day
@@ -110,13 +162,15 @@ public class CasesByDateApiController {
 ////                        backgroundThread.start();
                     int cases;
                     JSONObject timelines;
-                    JSONObject confirmed;
-                    JSONObject deaths;
+                    JSONObject latest;
+                    JSONObject confirmedObj;
+                    JSONObject deathsObj;
                     JSONObject timelineConfirmed;
                     JSONObject timelineDeaths;
                     JSONObject jsonObject;
                     JSONArray locations;
                     JSONObject firstElement;
+                    String details;
                     String content = responseBody.string();
 //                    BufferedSource source = responseBody.source();
 //                    source.request(Long.MAX_VALUE); // request the entire body.
@@ -125,11 +179,11 @@ public class CasesByDateApiController {
 //                    String responseBodyString = buffer.clone().readString(Charset.forName("UTF-8"));
 //                    List<Pair<String, Integer>> casesByDayList = new ArrayList<>();
 //                    if (province.contentEquals("")) {
-                        // parse JSON by the country
+                    // parse JSON by the country
 
 
 //                        try {
-                        // go through response body and parse for timelines and get cases for each day
+                    // go through response body and parse for timelines and get cases for each day
 //                            jsonObject = new JSONObject(responseBodyString);
 //                            locations = jsonObject.getJSONArray("locations");
 //
@@ -157,17 +211,29 @@ public class CasesByDateApiController {
 //                            e.printStackTrace();
 //                        }
 //                    } else {
+//                    jsonObject = new JSONObject(content);
+//                    details = jsonObject.getString("detail");
+//                    if (details.contentEquals("Source `jhu` does not have the desired location data.")) {
+//                        if (callerClass.contentEquals(MAINACTIVITY)) {
+//                            sendCasesToMainActivity.displayUnavailableData();
+//                        }
+//                        else if (callerClass.contentEquals(NOTIFICATIONACTIVITY)) {
+//                            sendCasesToNotificationActivity.displayUnavailableData();
+//                        }
+//                    }
+
+                    if (!isCumulative) {
                         // parse JSON by province
                         try {
                             jsonObject = new JSONObject(content);
                             locations = jsonObject.getJSONArray("locations");
                             firstElement = locations.getJSONObject(0);
                             timelines = firstElement.getJSONObject("timelines");
-                            confirmed = timelines.getJSONObject("confirmed");
-                            deaths = timelines.getJSONObject("deaths");
+                            confirmedObj = timelines.getJSONObject("confirmed");
+                            deathsObj = timelines.getJSONObject("deaths");
                             int numDeaths;
-                            timelineConfirmed = confirmed.getJSONObject("timeline");
-                            timelineDeaths = deaths.getJSONObject("timeline");
+                            timelineConfirmed = confirmedObj.getJSONObject("timeline");
+                            timelineDeaths = deathsObj.getJSONObject("timeline");
 
                             for (Iterator<String> it = timelineConfirmed.keys(); it.hasNext(); ) {
                                 String timelineKey = it.next();
@@ -182,31 +248,57 @@ public class CasesByDateApiController {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-//                    ParseJSON parseJSON = new ParseJSON();
-//                    parseJSON.execute(content, country, province, url);
-//                    System.out.println("1");
-//
-//
-                        System.out.println(casesPerDayList);
-//                }
+                    } else {
+                        jsonObject = new JSONObject(content);
+                        latest = jsonObject.getJSONObject("latest");
+                        confirmed = latest.getInt("confirmed");
+                        recovered = latest.getInt("recovered");
+                        deaths = latest.getInt("deaths");
                     }
+                }
+                    } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 countDownLatch.countDown();
                 }
-
-//        System.out.println("2");
         });
         try {
             countDownLatch.await();
+            // if info is unavailable
+            if (! isResponseSuccessful) {
+                isResponseSuccessful = true;
+                if (callerClass.contentEquals(MAINACTIVITY)) {
+                    sendCasesToMainActivity.displayUnavailableData();
+                    return;
+                }
+                else if (callerClass.contentEquals(NOTIFICATIONACTIVITY)) {
+                    sendCasesToNotificationActivity.displayUnavailableData();
+                    return;
+                }
+            } else {
+                if (isCumulative) {
+                    if (callerClass.contentEquals(MAINACTIVITY)) {
+                        sendCasesToMainActivity.sendCumulativeCases(confirmed, deaths, recovered);
+                    }
+                    else if (callerClass.contentEquals(NOTIFICATIONACTIVITY)) {
+                        sendCasesToNotificationActivity.sendCumulativeCases(confirmed, deaths, recovered);
+                    }
+                    else if (callerClass.contentEquals(NOTIFICATIONBROADCAST)) {
+                        sendCasesToNotificationBroadcast.sendCumulativeCases(confirmed, deaths, recovered);
+                    }
+                } else {
+                    if (callerClass.contentEquals(BARGRAPHFRAGMENT)) {
+                        sendCasesToBarGraphFragment.sendCasesPerDay(casesPerDayList, deathsPerDayList,
+                                recoveredPerDayList);
+                    }
+                }
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if (province.contentEquals("")) {
-            sendCasesToFragment.sendCasesPerDayToFragment(casesPerDayList, deathsPerDayList, recoveredPerDayList, country);
-        } else {
-            sendCasesToFragment.sendCasesPerDayToFragment(casesPerDayList, deathsPerDayList, recoveredPerDayList, province);
-        }
     }
-    public void getCountryData(String country) {
+    public void getCountryData(String country, Boolean isCumulative) {
+        countDownLatch = new CountDownLatch(1);
         String url = "https://api.covid19api.com/total/country/" + country;
         OkHttpClient client = new OkHttpClient();
 
@@ -225,28 +317,35 @@ public class CasesByDateApiController {
                     JSONArray countryInfo = new JSONArray(content);
                     JSONObject countryDailyInfo;
                     String date;
-                    int confirmed;
-                    int recovered;
-                    int deaths;
-                    // loop through the JSONArray to get all cases for each day
-                    for (int i = 0; i < countryInfo.length(); i++) {
-                        countryDailyInfo = countryInfo.getJSONObject(i);
-                        date = countryDailyInfo.getString("Date");
+
+                    if (! isCumulative) {
+                        // loop through the JSONArray to get all cases for each day
+                        for (int i = 0; i < countryInfo.length(); i++) {
+                            countryDailyInfo = countryInfo.getJSONObject(i);
+                            date = countryDailyInfo.getString("Date");
+                            confirmed = countryDailyInfo.getInt("Confirmed");
+                            casesPerDayList.add(new Pair<>(date, confirmed));
+                        }
+                        for (int i = 0; i < countryInfo.length(); i++) {
+                            countryDailyInfo = countryInfo.getJSONObject(i);
+                            date = countryDailyInfo.getString("Date");
+                            deaths = countryDailyInfo.getInt("Deaths");
+                            deathsPerDayList.add(new Pair<>(date, deaths));
+                        }
+                        for (int i = 0; i < countryInfo.length(); i++) {
+                            countryDailyInfo = countryInfo.getJSONObject(i);
+                            date = countryDailyInfo.getString("Date");
+                            recovered = countryDailyInfo.getInt("Recovered");
+                            recoveredPerDayList.add(new Pair<>(date, recovered));
+                        }
+                    } else {
+                        // get the last item in array - the most recent/current results
+                        countryDailyInfo = countryInfo.getJSONObject(countryInfo.length() - 1);
                         confirmed = countryDailyInfo.getInt("Confirmed");
-                        casesPerDayList.add(new Pair<>(date, confirmed));
-                    }
-                    for (int i = 0; i < countryInfo.length(); i++) {
-                        countryDailyInfo = countryInfo.getJSONObject(i);
-                        date = countryDailyInfo.getString("Date");
                         deaths = countryDailyInfo.getInt("Deaths");
-                        deathsPerDayList.add(new Pair<>(date, deaths));
-                    }
-                    for (int i = 0; i < countryInfo.length(); i++) {
-                        countryDailyInfo = countryInfo.getJSONObject(i);
-                        date = countryDailyInfo.getString("Date");
                         recovered = countryDailyInfo.getInt("Recovered");
-                        recoveredPerDayList.add(new Pair<>(date, recovered));
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -261,12 +360,29 @@ public class CasesByDateApiController {
         });
         try {
             countDownLatch.await();
-            sendCasesToFragment.sendCasesPerDayToFragment(casesPerDayList, deathsPerDayList, recoveredPerDayList, country);
+            if (isCumulative) {
+                if (callerClass.contentEquals(MAINACTIVITY)) {
+                    sendCasesToMainActivity.sendCumulativeCases(confirmed, deaths, recovered);
+                }
+                else if (callerClass.contentEquals(NOTIFICATIONACTIVITY)) {
+                    sendCasesToNotificationActivity.sendCumulativeCases(confirmed, deaths, recovered);
+                }
+                else if (callerClass.contentEquals(NOTIFICATIONBROADCAST)) {
+                    sendCasesToNotificationBroadcast.sendCumulativeCases(confirmed, deaths, recovered);
+                }
+            } else {
+                if (callerClass.contentEquals(BARGRAPHFRAGMENT)) {
+                    sendCasesToBarGraphFragment.sendCasesPerDay(casesPerDayList, deathsPerDayList,
+                            recoveredPerDayList);
+                }
+
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
     }
+
 
 //    private List<Pair<String, Integer>> parseJSON(ResponseBody responseBody, String country, String province) throws IOException, InterruptedException {
 //        int cases;

@@ -27,8 +27,9 @@ public class DisplayResultsActivity extends AppCompatActivity {
     int confirmed;
     int recovered;
     int deaths;
-    String country;
+    String countryOrProvince;
     String province;
+    boolean isCountry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,10 @@ public class DisplayResultsActivity extends AppCompatActivity {
         confirmed = intent.getIntExtra(MainActivity.EXTRA_MESSAGE, 0);
         recovered = intent.getIntExtra(MainActivity.RECOVERED, 0);
         deaths = intent.getIntExtra(MainActivity.DEATHS, 0);
-        country = intent.getStringExtra(MainActivity.COUNTRY);
-        province = intent.getStringExtra(MainActivity.PROVINCE);
+        isCountry = intent.getBooleanExtra("isCountry", false);
+//        country = intent.getStringExtra(MainActivity.COUNTRY);
+//        province = intent.getStringExtra(MainActivity.PROVINCE);
+        countryOrProvince = intent.getStringExtra(MainActivity.COUNTRYORPROVINCE);
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -51,6 +54,16 @@ public class DisplayResultsActivity extends AppCompatActivity {
 
     }
 
+//    @Override
+//    protected  void onResume() {
+//        super.onResume();
+//        Intent intent = getIntent();
+//        confirmed = intent.getIntExtra(MainActivity.EXTRA_MESSAGE, 0);
+//        recovered = intent.getIntExtra(MainActivity.RECOVERED, 0);
+//        deaths = intent.getIntExtra(MainActivity.DEATHS, 0);
+//        countryOrProvince = intent.getStringExtra(MainActivity.COUNTRYORPROVINCE);
+//        isCountry = intent.getBooleanExtra("isCountry", false);
+//    }
     public class MyPagerAdapter extends FragmentPagerAdapter {
         private int NUM_ITEMS = 3;
         String[] titles = {"Results", "Pie Chart", "Line Graph"};
@@ -74,7 +87,7 @@ public class DisplayResultsActivity extends AppCompatActivity {
                 case 1: // Fragment # 0 - This will show FirstFragment different title
                     return PieChartFragment.newInstance(confirmed, recovered, deaths);
                 case 2: // Fragment # 1 - This will show SecondFragment
-                    return BarGraphFragment.newInstance(country, province);
+                    return BarGraphFragment.newInstance(countryOrProvince, isCountry);
                 default:
                     return null;
             }

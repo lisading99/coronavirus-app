@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/ralewaysemibold</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,17 +14,33 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="textAppearances">
-        <item name="colorControlNormal">#c5c5c5</item>
+<!--    <style name="textAppearance">-->
+<!--        <item name="colorControlNormal">@color/colorControlNormal</item>-->
+<!--        <item name="colorControlActivated">@color/colorControlActivated</item>-->
+<!--&lt;!&ndash;        <item name="colorControlHighlight">@color/colorPrimaryDark</item>&ndash;&gt;-->
+<!--    </style>-->
+
+    <style name="textAppearanceNotification" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="colorControlNormal">@color/secondaryColor</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
-        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="MyHintStyle" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:fontFamily">@font/robotoregular</item>
+<!--    <style name="MyHintStyle" parent="@android:style/TextAppearance">-->
+<!--        <item name="android:textColor">@color/colorControlActivated</item>-->
+<!--    </style>-->
+
+    <style name="textLayoutAppearance" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="colorControlActivated">@color/colorControlActivated</item>
+<!--        <item name="android:textColor">#FFFFFF</item>&ndash;&gt;-->
+        <item name="boxStrokeWidth"> 3dp </item>
+
     </style>
 
+    <style name="textLayoutAppearanceForNav" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

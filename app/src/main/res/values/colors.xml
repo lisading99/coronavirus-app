@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#01579B</color>
-    <color name="colorAccent">#FF9800</color>
+    <color name="colorPrimary">#26C6DA</color>
+    <color name="colorPrimaryDark">#00BCD4</color>
+    <color name="colorAccent">#FF5722</color>
     <color name="deaths">#F44336</color>
-    <color name="recovered">#8BC34A</color>
+    <color name="recovered">#4CAF50</color>
+    <color name = "colorControlActivated">#9AFFFFFF</color>
+    <color name="colorControlNormal">#0F000000</color>
+    <color name="secondaryColor">#B0000000</color>
 </resources>

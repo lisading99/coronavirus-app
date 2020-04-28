@@ -44,13 +44,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-
-
                 />
             <com.anychart.AnyChartView
                 android:id="@+id/recovered_bar_graph"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"/>
+                android:layout_height="300dp"
+                android:visibility="gone"/>
             <ProgressBar
                 android:id="@+id/recovered_progress_bar"
                 android:layout_width="wrap_content"
@@ -59,6 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
                 />
         </LinearLayout>
     </ScrollView>

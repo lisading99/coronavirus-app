@@ -52,7 +52,7 @@ import static java.lang.Integer.sum;
  * Use the {@link BarGraphFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BarGraphFragment extends Fragment implements CasesByDateApiController.SendCasesToFragment{
+public class BarGraphFragment extends Fragment implements CasesByDateApiController.SendCasesToBarGraphFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,7 +61,8 @@ public class BarGraphFragment extends Fragment implements CasesByDateApiControll
     // TODO: Rename and change types of parameters
     String country;
     String province;
-    String provinceOrCountry;
+    String countryOrProvince;
+    boolean isCountry;
     String urlWithProvince = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=1&province=";
     String url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=1";
     List<Pair<String, Integer>> casesPerDayList = new ArrayList<>();
@@ -77,16 +78,17 @@ public class BarGraphFragment extends Fragment implements CasesByDateApiControll
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param country Parameter 1.
-     * @param province Parameter 2.
+
      * @return A new instance of fragment BarGraphFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BarGraphFragment newInstance(String country, String province) {
+    public static BarGraphFragment newInstance(String countryOrProvince, Boolean isCountry) {
         BarGraphFragment fragment = new BarGraphFragment();
         Bundle args = new Bundle();
-        args.putString("country", country);
-        args.putString("province", province);
+//        args.putString("country", country);
+//        args.putString("province", province);
+        args.putString("countryOrProvince", countryOrProvince);
+        args.putBoolean("isCountry", isCountry);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,16 +97,18 @@ public class BarGraphFragment extends Fragment implements CasesByDateApiControll
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            country = getArguments().getString("country");
-            province = getArguments().getString("province");
+//            country = getArguments().getString("country", "");
+//            province = getArguments().getString("province", "");
+            countryOrProvince = getArguments().getString("countryOrProvince", "");
+            isCountry = getArguments().getBoolean("isCountry");
         }
-        CasesByDateApiController casesByDateApiController = new CasesByDateApiController(this, getActivity());
+        CasesByDateApiController casesByDateApiController = new CasesByDateApiController(this);
         try {
             System.out.println(country + "====");
-            if (province.contentEquals("")) {
-                casesByDateApiController.getCountryData(country);
+            if (isCountry) {
+                casesByDateApiController.getCountryData(countryOrProvince, false);
             } else {
-                casesByDateApiController.run(urlWithProvince, province, country);
+                casesByDateApiController.getProvinceData(countryOrProvince, false);
             }
 
         } catch (IOException | InterruptedException e) {
@@ -330,21 +334,32 @@ public class BarGraphFragment extends Fragment implements CasesByDateApiControll
             data.add(new ValueDataEntry(cases.getKey(), cases.getValue()));
         }
         Column column = cartesian.column(data);
+
+        anyChartView.addFont("Raleway", "file:///android_asset/ralewaysemibold.ttf");
         column.tooltip()
-                .titleFormat("{%X}")
+                .titleFormat("{%X}").fontFamily("Raleway")
                 .position(Position.CENTER_BOTTOM)
                 .anchor(Anchor.CENTER_BOTTOM)
                 .offsetX(0d)
                 .offsetY(1d)
-                .format("{%Value}{groupsSeparator: }");
+                .format("{%Value}{groupsSeparator: }").fontFamily("Raleway");
         cartesian.animation(true);
-        cartesian.title("Confirmed cases by month for " + this.provinceOrCountry);
+        cartesian.title("Confirmed cases by month for " + this.countryOrProvince);
+        column.color("#26C6DA");
+        column.labels().fontFamily("Raleway");
+
+//        column.tooltip().fontFamily("Raleway");
+
         cartesian.yScale().minimum(0d);
-        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }").fontFamily("Raleway");
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT).fontFamily("Raleway");
         cartesian.interactivity().hoverMode(HoverMode.BY_X);
         cartesian.xAxis(0).title("Month");
+        cartesian.xAxis(0).title().fontFamily("Raleway");
+        cartesian.xAxis(0).labels().fontFamily("Raleway");
+        cartesian.title().fontFamily("Raleway");
         cartesian.yAxis(0).title("Number of cases");
+        cartesian.yAxis(0).title().fontFamily("Raleway");
         anyChartView.setChart(cartesian);
 
         AnyChartView deathsBarGraph = view.findViewById(R.id.deaths_bar_graph);
@@ -354,39 +369,43 @@ public class BarGraphFragment extends Fragment implements CasesByDateApiControll
         Cartesian deathsCartesian = AnyChart.column();
         List<DataEntry> deathsData = new ArrayList<>();
         // add data to the data list
-
-        System.out.println(casesPerMonth);
         for (Map.Entry<String, Integer> deaths : deathsPerMonth.entrySet()) {
             deathsData.add(new ValueDataEntry(deaths.getKey(), deaths.getValue()));
         }
 
-
+        deathsBarGraph.addFont("Raleway", "file:///android_asset/ralewaysemibold.ttf");
         Column deathsColumn = deathsCartesian.column(deathsData);
         deathsColumn.tooltip()
-                .titleFormat("{%X}")
+                .titleFormat("{%X}").fontFamily("Raleway")
                 .position(Position.CENTER_BOTTOM)
                 .anchor(Anchor.CENTER_BOTTOM)
                 .offsetX(0d)
                 .offsetY(1d)
                 .format("{%Value}{groupsSeparator: }");
-        deathsColumn.color("#F44336");
-
+        deathsColumn.color("#FF5722");
+        deathsColumn.labels().fontFamily("Raleway");
         deathsCartesian.animation(true);
-        deathsCartesian.title("Deaths by month for " + this.provinceOrCountry);
+        deathsCartesian.title("Deaths by month for " + this.countryOrProvince);
+        deathsCartesian.title().fontFamily("Raleway");
 
         deathsCartesian.yScale().minimum(0d);
 
-        deathsCartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
-        deathsCartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        deathsCartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }").fontFamily("Raleway");
+        deathsCartesian.tooltip().positionMode(TooltipPositionMode.POINT).fontFamily("Raleway");
         deathsCartesian.interactivity().hoverMode(HoverMode.BY_X);
         deathsCartesian.xAxis(0).title("Month");
+        deathsCartesian.xAxis(0).title().fontFamily("Raleway");
+        deathsCartesian.xAxis(0).labels().fontFamily("Raleway");
         deathsCartesian.yAxis(0).title("Number of deaths");
+        deathsCartesian.yAxis(0).title().fontFamily("Raleway");
         deathsBarGraph.setChart(deathsCartesian);
 
-        if (! recoveredPerMonth.isEmpty()) {
+        if (recoveredPerMonth.size() != 0) {
             AnyChartView recoveredBarGraph = view.findViewById(R.id.recovered_bar_graph);
+            recoveredBarGraph.setVisibility(View.VISIBLE);
             APIlib.getInstance().setActiveAnyChartView(recoveredBarGraph);
             ProgressBar recoveredProgressBar = view.findViewById(R.id.recovered_progress_bar);
+            recoveredBarGraph.setVisibility(View.VISIBLE);
             recoveredBarGraph.setProgressBar(recoveredProgressBar);
             Cartesian recoveredCartesian = AnyChart.column();
             List<DataEntry> recoveredData = new ArrayList<>();
@@ -394,33 +413,40 @@ public class BarGraphFragment extends Fragment implements CasesByDateApiControll
 
                 recoveredData.add(new ValueDataEntry(recovered.getKey(), recovered.getValue()));
             }
+
+           recoveredBarGraph.addFont("Raleway", "file:///android_asset/ralewaysemibold.ttf");
             Column recoveredColumn = recoveredCartesian.column(recoveredData);
             recoveredColumn.tooltip()
-                    .titleFormat("{%X}")
+                    .titleFormat("{%X}").fontFamily("Raleway")
                     .position(Position.CENTER_BOTTOM)
                     .anchor(Anchor.CENTER_BOTTOM)
                     .offsetX(0d)
                     .offsetY(1d)
                     .format("{%Value}{groupsSeparator: }");
-            recoveredColumn.color("#8BC34A");
+
+            recoveredColumn.labels().fontFamily("Raleway");
+            recoveredColumn.color("#4CAF50");
             recoveredCartesian.animation(true);
-            recoveredCartesian.title("Recovered cases by month for " + this.provinceOrCountry);
+            recoveredCartesian.title("Recovered cases by month for " + this.countryOrProvince);
+            recoveredCartesian.title().fontFamily("Raleway");
             recoveredCartesian.yScale().minimum(0d);
-            recoveredCartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
-            recoveredCartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+            recoveredCartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }").fontFamily("Raleway");
+            recoveredCartesian.tooltip().positionMode(TooltipPositionMode.POINT).fontFamily("Raleway");
             recoveredCartesian.interactivity().hoverMode(HoverMode.BY_X);
             recoveredCartesian.xAxis(0).title("Month");
+            recoveredCartesian.xAxis(0).title().fontFamily("Raleway");
+            recoveredCartesian.xAxis(0).labels().fontFamily("Raleway");
             recoveredCartesian.yAxis(0).title("Number of recovered cases");
+            recoveredCartesian.yAxis(0).title().fontFamily("Raleway");
             recoveredBarGraph.setChart(recoveredCartesian);
         }
         return view;
     }
 
     @Override
-    public void sendCasesPerDayToFragment(List<Pair<String, Integer>> casesPerDayList, List<Pair<String, Integer>> deathsPerDayList, List<Pair<String, Integer>> recoveredPerDayList, String provinceOrCountry) {
+    public void sendCasesPerDay(List<Pair<String, Integer>> casesPerDayList, List<Pair<String, Integer>> deathsPerDayList, List<Pair<String, Integer>> recoveredPerDayList) {
         casesPerMonth = sortsCasesByMonth(casesPerDayList);
         deathsPerMonth = sortsCasesByMonth(deathsPerDayList);
         recoveredPerMonth = sortsCasesByMonth(recoveredPerDayList);
-        this.provinceOrCountry = provinceOrCountry;
     }
 }

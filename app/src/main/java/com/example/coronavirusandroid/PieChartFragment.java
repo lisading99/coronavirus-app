@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Pie;
+import com.anychart.scales.OrdinalColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +86,12 @@ public class PieChartFragment extends Fragment {
         data.add(new ValueDataEntry("Recovered", recovered));
         data.add(new ValueDataEntry("Deaths", deaths));
         pie.data(data);
+        anyChartView.addFont("Raleway", "file:///android_asset/ralewaysemibold.ttf");
+        pie.legend().fontFamily("Raleway");
+        pie.labels().fontFamily("Raleway");
+        pie.normal().fontFamily("Raleway");
+        pie.tooltip().fontFamily("Raleway");
+        pie.palette().items(new String[]{"#26C6DA", "#4CAF50", "#FF5722"}, "");
         anyChartView.setChart(pie);
         return view;
     }
