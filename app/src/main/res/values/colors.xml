@@ -8,4 +8,5 @@
     <color name = "colorControlActivated">#9AFFFFFF</color>
     <color name="colorControlNormal">#0F000000</color>
     <color name="secondaryColor">#B0000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>

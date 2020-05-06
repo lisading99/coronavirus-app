@@ -9,20 +9,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,18 +40,13 @@ CasesByDateApiController.SendCasesToNotificationActivity{
     Button getNotifs;
     Button setTime;
     RadioButton countryButton, provinceButton;
-//    TextView setTime;
-    TextView country;
-    TextView provinceOrState;
     TextInputLayout textInputLayout;
     TextInputEditText countryOrProvinceInput;
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-    int hour, minute, calledFrom;
+    int hour, minute;
     CasesByDateApiController casesByDateApiController;
-    AlertDialog.Builder alertBuilder;
-    AlertDialog alert;
     String countryOrProvince;
     boolean isCountryInput = true;
     boolean isResponseSuccessful;
@@ -70,8 +63,6 @@ CasesByDateApiController.SendCasesToNotificationActivity{
         provinceButton = findViewById(R.id.provinceOrStateButton);
         countryOrProvinceInput = findViewById(R.id.countryOrProvinceInput);
         textInputLayout = findViewById(R.id.countryOrProvinceLayout);
-//        country = findViewById(R.id.country);
-//        provinceOrState = findViewById(R.id.provinceOrState);
         navigationView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.main_toolbar);
@@ -98,8 +89,6 @@ CasesByDateApiController.SendCasesToNotificationActivity{
                         // another startActivity, this is for item with id "menu_item2"
                         intent = new Intent(NotificationActivity.this, NotificationActivity.class);
                         startActivity(intent);
-                        break;
-                    case R.id.nav_latest_news:
                         break;
                     default:
                         return true;
@@ -147,23 +136,6 @@ CasesByDateApiController.SendCasesToNotificationActivity{
             }
         });
 
-//        provinceOrState.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                provinceInput = s.toString();
-//            }
-//        });
-
         final Calendar c = Calendar.getInstance();
         int currentHour = c.get(Calendar.HOUR_OF_DAY);
         int currentMinute = c.get(Calendar.MINUTE);
@@ -190,18 +162,13 @@ CasesByDateApiController.SendCasesToNotificationActivity{
             public void onClick(View v) {
                 if (isCountryInput) {
                     if (! Utils.validateCountryInput(countryOrProvince)) {
-                        alertBuilder = new AlertDialog.Builder(NotificationActivity.this);
-                        alertBuilder.setTitle("Invalid input")
-                                .setMessage("The given input for country is invalid. Please double check the spelling " +
-                                        "for any typos.");
-                        alertBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                return;
-                            }
-                        });
-                        alert = alertBuilder.create();
-                        alert.show();
+                        DialogFragment dialogFragment = AlertDialogFragment.newInstance("" +
+                                        "Invalid input",
+                                "The given input for country is invalid. Please double " +
+                                        "check the spelling " + "for any typos."
+                        );
+                        dialogFragment.show(getSupportFragmentManager(), "dialog");
+
                     } else {
                         editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                         editor.putString("countryOrProvince", countryOrProvince);
@@ -212,28 +179,6 @@ CasesByDateApiController.SendCasesToNotificationActivity{
                             displayNotifsBySpecifiedTime();
                         }
                     }
-
-                    // validate inputs from user, invalid inputs display error message
-                    //TODO: refactor alert dialog into its own fragment so code is reusable
-//                    if (!Utils.validateCountryInput(countryOrProvince)) {
-//                        alertBuilder = new AlertDialog.Builder(MainActivity.this);
-//                        alertBuilder.setTitle("Invalid input")
-//                                .setMessage("The given input for country is invalid. Please double check the spelling " +
-//                                        "for any typos.");
-//                        alertBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                return;
-//                            }
-//                        });
-//
-//                        alert = alertBuilder.create();
-//                        alert.show();
-//                    } else {
-//                        casesByDateApiController.getCountryData(countryOrProvince, true);
-//                        isCountryInput = false;
-//                    }
-
                 } else {
                     try {
                         casesByDateApiController.getProvinceData(countryOrProvince, true);
@@ -256,11 +201,6 @@ CasesByDateApiController.SendCasesToNotificationActivity{
     }
 
     @Override
-    protected  void onStart() {
-        super.onStart();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         setTime.setText(String.format("%d: %d", hour, minute));
@@ -280,14 +220,6 @@ CasesByDateApiController.SendCasesToNotificationActivity{
     }
 
     private void displayNotifsBySpecifiedTime() {
-
-//        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-//        String country = prefs.getString("country", "No country defined");//"No name defined" is the default value.
-//        String province = prefs.getString("province", "No province defined");
-
-        // check if input will produce any results from api; if not display dialog alert
-//        casesByDateApiController.getProvinceData();
-
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(Calendar.HOUR_OF_DAY, hour); // For 1 PM or 2 PM
@@ -309,7 +241,8 @@ CasesByDateApiController.SendCasesToNotificationActivity{
 
 //Gets the TextView from the Toast so it can be editted
         TextView text = view.findViewById(android.R.id.message);
-        text.setTextColor(getResources().getColor(R.color.colorControlActivated));
+        text.setTextColor(getResources().getColor(R.color.white));
+        toast.setGravity(Gravity.TOP, 0, 150);
         toast.show();
     }
 
@@ -322,11 +255,6 @@ CasesByDateApiController.SendCasesToNotificationActivity{
     }
 
     @Override
-    public void sendCasesPerDay(List<Pair<String, Integer>> casesPerDayList, List<Pair<String, Integer>> deathsPerDayList, List<Pair<String, Integer>> recoveredPerDayList) {
-
-    }
-
-    @Override
     public void sendCumulativeCases(int confirmed, int deaths, int recovered) {
 
     }
@@ -334,18 +262,10 @@ CasesByDateApiController.SendCasesToNotificationActivity{
     @Override
     public void displayUnavailableData() {
         isResponseSuccessful = false;
-        alertBuilder = new AlertDialog.Builder(NotificationActivity.this);
-        alertBuilder.setTitle("Location data unavailable")
-                .setMessage("The given input for country/province data is unavailable. Please" +
-                        "try with a different country or province input. ");
-        alertBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        });
-
-        alert = alertBuilder.create();
-        alert.show();
+        DialogFragment dialogFragment = AlertDialogFragment.newInstance("Location data unavailable",
+                "The given input for country/province data is unavailable. Please " +
+                        "try with a different country or province input. "
+        );
+        dialogFragment.show(getSupportFragmentManager(), "dialog");
     }
 }

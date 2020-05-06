@@ -10,10 +10,8 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.util.Pair;
 
 import java.io.IOException;
-import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.coronavirusandroid.MainActivity.CHANNEL_ID;
@@ -26,8 +24,6 @@ public class NotificationBroadcast extends BroadcastReceiver implements CasesByD
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         SharedPreferences prefs = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-//        String country = prefs.getString("country", "No country defined");//"No name defined" is the default value.
-//        String province = prefs.getString("province", "No province defined");
         String countryOrProvince = prefs.getString("countryOrProvince", "");
         boolean isCountry = prefs.getBoolean("isCountry", true);
         CasesByDateApiController casesByDateApiController = new CasesByDateApiController(this);
@@ -58,24 +54,6 @@ public class NotificationBroadcast extends BroadcastReceiver implements CasesByD
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-    }
-    @Override
-    public void updateNotifs(int confirmed, int recovered, int deaths) {
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-//                .setSmallIcon(R.mipmap.ic_launcher)
-//                .setContentTitle("Coronavirus results")
-//                .setContentText("confirmed: " + confirmed)
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//        createNotificationChannel();
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-//// notificationId is a unique int for each notification that you must define
-//        int notificationId = 1;
-//        notificationManager.notify(notificationId, builder.build());
-    }
-
-    @Override
-    public void sendCasesPerDay(List<Pair<String, Integer>> casesPerDayList, List<Pair<String, Integer>> deathsPerDayList, List<Pair<String, Integer>> recoveredPerDayList) {
-
     }
 
     @Override

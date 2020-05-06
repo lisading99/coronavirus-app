@@ -14,25 +14,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-<!--    <style name="textAppearance">-->
-<!--        <item name="colorControlNormal">@color/colorControlNormal</item>-->
-<!--        <item name="colorControlActivated">@color/colorControlActivated</item>-->
-<!--&lt;!&ndash;        <item name="colorControlHighlight">@color/colorPrimaryDark</item>&ndash;&gt;-->
-<!--    </style>-->
 
     <style name="textAppearanceNotification" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="colorControlNormal">@color/secondaryColor</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
-<!--    <style name="MyHintStyle" parent="@android:style/TextAppearance">-->
-<!--        <item name="android:textColor">@color/colorControlActivated</item>-->
-<!--    </style>-->
-
     <style name="textLayoutAppearance" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="colorControlNormal">@color/colorControlNormal</item>
         <item name="colorControlActivated">@color/colorControlActivated</item>
-<!--        <item name="android:textColor">#FFFFFF</item>&ndash;&gt;-->
         <item name="boxStrokeWidth"> 3dp </item>
 
     </style>

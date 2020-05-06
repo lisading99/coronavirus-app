@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".MainActivity">-->
-
 
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -86,73 +79,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/countryLayout"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
-<!--            app:theme="@style/textLayoutAppearanceForNav"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="150dp"-->
-<!--            android:layout_marginLeft="70dp"-->
-<!--            android:layout_marginRight="70dp"-->
-<!--            android:hint="@string/country_label"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/country"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textColor="#B0000000"/>-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            app:theme="@style/textLayoutAppearanceForNav"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="70dp"-->
-<!--            android:layout_marginRight="70dp"-->
-<!--            android:hint="@string/province_label"-->
-<!--            android:id="@+id/provinceOrStateLayout"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/countryLayout"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/provinceOrState"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textColor="#B0000000"-->
-<!--                />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-        <!--    <EditText-->
-        <!--        android:id="@+id/country"-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--        app:layout_constraintRight_toRightOf="parent"-->
-        <!--        app:layout_constraintBottom_toTopOf="@+id/provinceOrState"-->
-        <!--        />-->
-        <!--    <EditText-->
-        <!--        android:id="@+id/provinceOrState"-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--        app:layout_constraintRight_toRightOf="parent"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/country"-->
-        <!--        app:layout_constraintBottom_toTopOf="@+id/coronavirusResults"-->
-        <!--        />-->
-        <!--    <Button-->
-        <!--        android:id="@+id/coronavirusResults"-->
-        <!--        android:text="Get coronavirus results"-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--        app:layout_constraintRight_toRightOf="parent"-->
-        <!--        -->
-        <!--        style = "@style/btn"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/provinceOrStateLayout"-->
-        <!--        />-->
         <com.google.android.material.button.MaterialButton
         android:id="@+id/getNotifs"
         android:text="Get notifications"
@@ -200,25 +126,6 @@
             app:cornerRadius="40dp"
             android:textColor="@color/colorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            app:boxStrokeColor="@color/colorPrimary"-->
-<!--            app:hintTextAppearance="@style/MyHintStyle"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="70dp"-->
-<!--            android:layout_marginRight="70dp"-->
-<!--            android:hint="Set time"-->
-<!--            -->
-<!--            android:id="@+id/setTimeLayout"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/provinceOrStateLayout"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">-->
-
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/setTime"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -230,4 +137,3 @@
         android:fitsSystemWindows="true"
         app:menu="@menu/menu_main"/>
 </androidx.drawerlayout.widget.DrawerLayout>
-    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

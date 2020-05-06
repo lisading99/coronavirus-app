@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".MainActivity">-->
-
 
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -88,58 +81,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        app:boxBackgroundColor="@color/colorPrimaryDark"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="70dp"-->
-<!--        android:layout_marginRight="70dp"-->
-<!--        android:hint="@string/province_label"-->
-<!--        android:id="@+id/provinceOrStateLayout"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/countryLayout"-->
-<!--        android:theme="@style/textLayoutAppearance"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
-<!--        >-->
-
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--           android:id="@+id/provinceOrState"-->
-<!--            android:textColor="#FFFFFF"-->
-<!--            android:layout_marginTop="25dp"-->
-<!--            android:layout_marginBottom="10dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            />-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/country"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/provinceOrState"-->
-<!--        />-->
-<!--    <EditText-->
-<!--        android:id="@+id/provinceOrState"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/country"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/coronavirusResults"-->
-<!--        />-->
-<!--    <Button-->
-<!--        android:id="@+id/coronavirusResults"-->
-<!--        android:text="Get coronavirus results"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        -->
-<!--        style = "@style/btn"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/provinceOrStateLayout"-->
-<!--        />-->
-    <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton
         android:id="@+id/coronavirusResults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -152,49 +94,6 @@
         android:textColor="@color/colorPrimary"
         />
 
-<!--    <Button-->
-<!--        android:id="@+id/getNotifs"-->
-<!--        android:text="Get notifications"-->
-<!--        android:fontFamily="@font/robotoregular"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/coronavirusResults" />-->
-<!--    <Button-->
-<!--        android:id="@+id/displayPieChart"-->
-<!--        android:text="Display pie chart"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/getNotifs" />-->
-<!--    <TextView-->
-<!--        android:id="@+id/confirmed"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/getNotifs" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/recovered"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/confirmed" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/deaths"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/recovered" />-->
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -206,4 +105,3 @@
         app:itemIconTint="@color/colorPrimary"
         app:menu="@menu/menu_main"/>
 </androidx.drawerlayout.widget.DrawerLayout>
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

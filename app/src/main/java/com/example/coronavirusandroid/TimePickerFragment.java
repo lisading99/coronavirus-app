@@ -9,19 +9,10 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.text.format.DateFormat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TimePickerFragment#} factory method to
- * create an instance of this fragment.
- */
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     sendTimeToNotificationActivity sendTime;
     public TimePickerFragment (sendTimeToNotificationActivity sendTime) {
